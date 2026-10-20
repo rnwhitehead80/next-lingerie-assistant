@@ -1,61 +1,44 @@
-# NEXT Lingerie Expert Assistant — React POC
+# NEXT Lingerie Expert Assistant — GitHub Pages
 
-Interactive mobile-first lingerie shopping assistant: guided discovery, fit help, category recommendations, product details and a demo shopping bag.
+Interactive React + Vite prototype. **Do not configure GitHub Pages to publish from the `main` branch's root folder:** the root `index.html` points to React source (`/src/main.jsx`) that GitHub Pages cannot compile. Use **GitHub Actions** instead.
 
-> **Concept only.** Product names, prices, graphics, suggested size ranges and matching suggestions are illustrative. There is no live NEXT product feed, checkout, Sierra/Bloomreach connection, or model API. This is not medical or professional fitting advice.
+## Upload and publish
 
-## Publish to GitHub Pages (no coding required)
+1. Create a new GitHub repository (e.g. `next-lingerie-assistant`).
+2. Unzip this archive **on your computer**, keeping the folder structure intact. In particular, `.github/workflows/deploy.yml` must be uploaded. On a Mac, the `.github` folder is hidden by default; GitHub Desktop is a convenient way to preserve it.
+3. Add/commit/push the contents of the unzipped folder to the **`main`** branch. Your repository root should contain `package.json`, `index.html`, `vite.config.js`, `src/`, and `.github/` (not one extra enclosing folder).
+4. Open your repository on GitHub → **Settings → Pages** → under **Build and deployment**, choose **Source: GitHub Actions** (NOT "Deploy from a branch").
+5. Go to **Actions** → **Deploy prototype to GitHub Pages**. Wait until **build** and **deploy** are both green. If there is no run, open the workflow and click **Run workflow**, choose `main`, and run it. If GitHub asks you to enable Actions, enable it.
+6. Open the URL in Settings → Pages, typically `https://YOUR-USERNAME.github.io/next-lingerie-assistant/` (with a trailing slash). It can take a short while for Pages to update.
 
-1. On [github.com/new](https://github.com/new), create a **public** repository, e.g. `next-lingerie-assistant` (do not initialise with a README).
-2. Open the repository and choose **Add file → Upload files**.
-3. Upload the **contents of this folder** (not the ZIP or the containing folder), including `src`, `index.html`, `package.json`, `vite.config.js`, `.gitignore` and `.github/workflows/deploy.yml`. **Important:** GitHub's web upload may ignore hidden folders such as `.github`; for the reliable option use the terminal instructions below, or create `.github/workflows/deploy.yml` manually through **Add file → Create new file** and paste the workflow content.
-4. Commit files directly to the `main` branch.
-5. In the repository, go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-6. Select **Actions** and wait for the green **Deploy prototype to GitHub Pages** run. If it doesn't start, open that workflow and choose **Run workflow**.
-7. Visit `https://YOUR-USERNAME.github.io/next-lingerie-assistant/` (substitute your GitHub username and repository name).
+### If you see a blank page
 
-### Recommended upload with GitHub Desktop
+- Make sure **Settings → Pages → Source** says **GitHub Actions**, not "Deploy from a branch".
+- Check that **Actions → Deploy prototype to GitHub Pages** completed successfully. Click the latest run and read errors in **Install dependencies**, **Build prototype**, and **Deploy to GitHub Pages**.
+- Check that `.github/workflows/deploy.yml` exists in the **repository root** and that files aren't inside another folder.
+- Hard refresh with Cmd+Shift+R (Mac) / Ctrl+Shift+R (Windows).
+- In Developer Tools → Console/Network, a failed `/src/main.jsx` request or `Unexpected token '<'` means unbuilt source is being served instead of the `dist` output. Missing `assets/` files usually indicates wrong deployment source or URL.
 
-Unzip this bundle, then use **GitHub Desktop → File → Add Local Repository**. If prompted, create a repository here. Choose **Publish repository**, publish to GitHub, and enable Pages via **Settings → Pages → GitHub Actions**. This preserves `.github/workflows/deploy.yml`.
+## Local development
 
-### Recommended upload with Git
-
-Run these commands *inside the unzipped folder* after creating an empty GitHub repository:
-
-```bash
-git init
-git add .
-git commit -m "Initial NEXT lingerie expert assistant prototype"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/next-lingerie-assistant.git
-git push -u origin main
-```
-
-Then enable **Settings → Pages → Source → GitHub Actions**.
-
-## Develop locally
-
-Node.js 20+ recommended.
+Requires Node 20+:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build and preview:
+Local production build:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Project structure
+## How it works
 
-- `src/main.jsx` — interactive React experience, sample products and behaviour
-- `src/style.css` — mobile-first styling
-- `vite.config.js` — GitHub Pages-safe relative paths
-- `.github/workflows/deploy.yml` — build and deploy on each push to `main`
+GitHub Actions installs dependencies, runs `vite build`, and publishes only the resulting `dist/` folder. `vite.config.js` sets `base: './'` so asset URLs work under a repository subpath on GitHub Pages or a custom domain. The `.nojekyll` file is created in the published output.
 
-## Updating the POC
+### Scope
 
-Edit `src/main.jsx` and `src/style.css`, then commit and push to `main`. GitHub Actions will redeploy the site automatically.
+This is an interactive concept with illustrative products and prices. It is not connected to live NEXT inventory, Sierra, Bloomreach, or checkout.
